@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/main.ts"></script>
+    <link rel="stylesheet" href="src/style.css" />
+    <title>Ravintolat</title>
+  </head>
+  <body>
+    <dialog>
+      <!-- add restaurant info here when restaurant is clicked -->
+    </dialog>
+    <header>
+      <nav>
+        <div class="topnav">
+          <a href="#" class="nav-title-parent"
+            ><h2 class="nav-title">Ravintolat</h2></a
+          >
+          <div id="myLinks">
+            <a class="nav-link" href="#">Etusivu</a>
+            <a class="nav-link" href="#">Ravintolat</a>
+            <a class="nav-link" href="#">Yhteystiedot</a>
+            <a href="#" class="nav-right" id="loginButton">Kirjaudu</a>
+          </div>
+          <a role="button" class="icon" (click)="openNav()">
+            <i class="fa fa-bars"></i>
+          </a>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <section class="top-burger-section">
+        <div class="main-bg-img"></div>
+        <div class="burger-section-text-container">
+          <div class="top-burger-ad-container">
+            <h2 class="top-burger-h2">Nam nam!</h2>
+            <p>Katso opiskelijaravintolat helposti verkosta!</p>
+          </div>
+          <object
+            class="car-svg"
+            type="image/svg+xml"
+            data="images/car-white-infinite.svg"
+          >
+            <img src="images/car-white-infinite.svg" alt="car svg" />
+          </object>
+          <a href="#" id="loginButton" class="order-now">Kirjaudu!</a>
+        </div>
+      </section>
+      <section class="mini-nav">
+        <ul class="mini-nav-container">
+          <li class="mini-nav-element">
+            <a class="mini-nav-text" id="sodexo" href="#">Sodexo</a>
+          </li>
+          <li class="mini-nav-element">
+            <a class="mini-nav-text" id="compass" href="#">Compass</a>
+          </li>
+          <li class="mini-nav-element">
+            <a class="mini-nav-text" id="reset" href="#">Kaikki</a>
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2 class="menu-filter-title">Kaikki</h2>
+
+        <div class="menu-container">
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Tulinen Mestari</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, Naudanlihapihvi, Cheddarjuusto,
+              Jalapeño, Tulinen majoneesi, Jäävuorisalaatti, Tomaatti
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Klassinen Deluxe</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, Naudanlihapihvi, Monterey Jack
+              -juusto, Sipuli, Salaatti, Tomaatti, Ketsuppi
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Mausteinen Seikkailu</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, Naudanlihapihvi,
+              Sriracha-majoneesi, Punainen sipuli, Pepperoni, Jäävuorisalaatti,
+              Tomaatti
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Vege burger</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, Vegaaninen pihvi, Tofujuusto,
+              Maustekurkku, Ketsuppi, Salaatti, Tomaatti
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Meksiko feast</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, 2kpl pihvi, 2kpl juusto,
+              Guacamole, Salaatti, Tomaatti, Sipuli
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">King burger</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, 2kpl pihvi, 2kpl juusto, pekoni,
+              majoneesi, ketsuppi, salaatti, tomaatti
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+          <div class="menu-item-container">
+            <img
+              class="menu-food-image"
+              src="images/burger.png"
+              alt="burger image"
+            />
+            <h3 class="menu-food-title">Talon Herkku</h3>
+            <p class="menu-ingredients">
+              <span>Ainesosat: </span>Sämpylä, Pihvi, Emmentaljuusto, Sipuli,
+              Salaatti, Tomaatti, Majoneesi
+            </p>
+            <a href="#" id="loginButton" class="add-to-cart-btn"
+              >Lisää koriin</a
+            >
+          </div>
+        </div>
+      </section>
+      <section style="margin-top: 80px">
+        <article id="firstRestaurant">
+          <div class="burger-image-parent">
+            <div class="burger-image"></div>
+          </div>
+          <aside>
+            <div class="aside-container">
+              <h3>Lisää meistä</h3>
+              <h2>Maistuvien hampurilaisten koti</h2>
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Molestiae eius corporis accusamus? Quos aliquid labore.
+              </p>
+            </div>
+          </aside>
+          <img
+            class="order-now-img"
+            id="loginButton"
+            src="./images/ordernow.png"
+            alt="order now image"
+          />
+        </article>
+      </section>
+    </main>
+    <footer style="margin-top: 20px">
+      <p class="footer-text">Copyright meitsille C</p>
+    </footer>
+  </body>
+</html>
