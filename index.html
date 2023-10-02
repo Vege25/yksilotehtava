@@ -19,13 +19,13 @@
             ><h2 class="nav-title">Ravintolat</h2></a
           >
           <div id="myLinks">
-            <a class="nav-link" href="#">Etusivu</a>
-            <a class="nav-link" href="#">Ravintolat</a>
-            <a class="nav-link" href="#">Yhteystiedot</a>
-            <a href="#" class="nav-right" id="loginButton">Kirjaudu</a>
+            <a id="frontPage" class="nav-link" href="#">Etusivu</a>
+            <a id="restaurants" class="nav-link">Ravintolat</a>
+            <a id="map" class="nav-link">Yhteystiedot</a>
+            <a href="#" class="nav-right" id="loginButton">Profiili</a>
           </div>
-          <a role="button" class="icon" (click)="openNav()">
-            <i class="fa fa-bars"></i>
+          <a id="hamburgerMenuButton" class="icon">
+            <i class="fa fa-bars">-</i>
           </a>
         </div>
       </nav>
@@ -45,24 +45,26 @@
           >
             <img src="images/car-white-infinite.svg" alt="car svg" />
           </object>
-          <a href="#" id="loginButton" class="order-now">Kirjaudu!</a>
+          <a href="#" id="loginButton" class="order-now">Profiili!</a>
         </div>
       </section>
       <section class="mini-nav">
         <ul class="mini-nav-container">
-          <li class="mini-nav-element">
-            <a class="mini-nav-text" id="sodexo" href="#">Sodexo</a>
+          <li class="mini-nav-element" id="sodexo">
+            <a class="mini-nav-text">Sodexo</a>
           </li>
-          <li class="mini-nav-element">
-            <a class="mini-nav-text" id="compass" href="#">Compass</a>
+          <li class="mini-nav-element" id="compass">
+            <a class="mini-nav-text">Compass</a>
           </li>
-          <li class="mini-nav-element">
-            <a class="mini-nav-text" id="reset" href="#">Kaikki</a>
+          <li class="mini-nav-element" id="reset">
+            <a class="mini-nav-text">Kaikki</a>
           </li>
         </ul>
       </section>
       <section>
-        <h2 class="menu-filter-title">Kaikki</h2>
+        <h2 id="menuFilterTitle" class="menu-filter-title">
+          Kaikki ravintolat
+        </h2>
 
         <div class="menu-container">
           <div class="menu-item-container">
@@ -174,7 +176,7 @@
         </div>
       </section>
       <section style="margin-top: 80px">
-        <article id="firstRestaurant">
+        <article id="restaurantMap">
           <div class="burger-image-parent">
             <div class="burger-image"></div>
           </div>

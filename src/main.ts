@@ -5,25 +5,61 @@ import {
   restaurantModal,
   restaurantRow,
   firstRestaurantRow,
+  loginModal,
 } from "./components";
 import { fetchData } from "./functions";
 import { Menu } from "./interfaces/Menu";
 import { Restaurant } from "./interfaces/Restaurant";
 import { apiUrl, positionOptions } from "./variables";
 
-const dialog = document.querySelector("#loginDialog");
-const modalCloseButton = document.querySelector("#modal-close-button");
+const dialog = document.querySelector("dialog");
 const navTitle = document.querySelector(".nav-title");
 const loginButtons = document.querySelectorAll("#loginButton");
-loginButtons.forEach((loginButton) => {
-  loginButton.addEventListener("click", () => {
-    dialog?.showModal();
+const hamburgerMenuButton = document.querySelector("#hamburgerMenuButton");
+const navButtons = document.querySelectorAll(".nav-link");
+
+navButtons.forEach((navButton) => {
+  navButton.addEventListener("click", () => {
+    const miniNav = document.querySelector(".mini-nav");
+    const restaurantMap = document.querySelector("#restaurantMap");
+    if (!miniNav || !restaurantMap) {
+      return;
+    }
+    let navElement;
+    if (navButton.id === "restaurants") {
+      navElement = miniNav;
+    } else if (navButton.id === "map") {
+      navElement = restaurantMap;
+    } else {
+      return;
+    }
+
+    window.scrollTo({
+      behavior: "smooth",
+      top:
+        navElement.getBoundingClientRect().top -
+        document.body.getBoundingClientRect().top -
+        20,
+    });
+    openNav();
   });
 });
-modalCloseButton?.addEventListener("click", (event) => {
-  event.preventDefault();
-  dialog?.close();
-  console.log("closed");
+
+hamburgerMenuButton?.addEventListener("click", () => {
+  openNav();
+});
+const modal = document.querySelector("dialog");
+if (!modal) {
+  throw new Error("Modal not found");
+}
+loginButtons.forEach((loginButton) => {
+  loginButton.addEventListener("click", () => {
+    loginModal();
+    const loginDialog = loginModal();
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML("beforeend", loginDialog);
+    (modal as any)?.showModal();
+  });
 });
 
 function updateTextContent() {
@@ -39,8 +75,8 @@ function updateTextContent() {
 updateTextContent();
 window.addEventListener("resize", updateTextContent);
 
-export function openNav() {
-  var links = document.getElementById("myLinks");
+function openNav() {
+  const links = document.getElementById("myLinks");
   if (links) {
     if (links.style.display === "block") {
       links.style.display = "none";
@@ -49,28 +85,7 @@ export function openNav() {
     }
   }
 }
-document
-  .querySelectorAll<HTMLAnchorElement>('a[href^="#"]')
-  .forEach((anchor) => {
-    anchor.addEventListener("click", function (evt: Event) {
-      evt.preventDefault();
 
-      const targetId = this.getAttribute("href")?.substring(1);
-      const targetElement = document.getElementById(targetId!);
-
-      if (targetElement) {
-        window.scrollTo({
-          top: targetElement.offsetTop,
-          behavior: "smooth",
-        });
-      }
-    });
-  });
-
-const modal = document.querySelector("dialog");
-if (!modal) {
-  throw new Error("Modal not found");
-}
 modal.addEventListener("click", () => {
   modal.close();
 });
@@ -87,32 +102,26 @@ const createTable = (restaurants: Restaurant[]) => {
   let isFirstRestaurant = true;
   restaurants.forEach((restaurant: Restaurant) => {
     // if it is the first restaurant give make different html for it
-    const tr = isFirstRestaurant
+    const menuItem = isFirstRestaurant
       ? (() => {
           isFirstRestaurant = false;
           return firstRestaurantRow(restaurant);
         })()
       : restaurantRow(restaurant);
-    menuContainer.appendChild(tr);
-    tr.addEventListener("click", async () => {
+    menuContainer.appendChild(menuItem);
+    /*menuItem.addEventListener("click", async () => {
       try {
-        // remove all highlights
-        const allHighs = document.querySelectorAll(".highlight");
-        allHighs.forEach((high) => {
-          high.classList.remove("highlight");
-        });
-        // add highlight
-        tr.classList.add("highlight");
         // add restaurant data to modal
         modal.innerHTML = "";
 
         // fetch menu
         const menu = await fetchData(
-          /*<Menu>*/ apiUrl + `/restaurants/daily/${restaurant._id}/fi`
+          apiUrl + `/restaurants/daily/${restaurant._id}/fi`
         );
         console.log(menu);
 
         const menuHtml = restaurantModal(restaurant, menu);
+        modal.innerHTML = "";
         modal.insertAdjacentHTML("beforeend", menuHtml);
 
         modal.showModal();
@@ -120,7 +129,7 @@ const createTable = (restaurants: Restaurant[]) => {
         modal.innerHTML = errorModal((error as Error).message);
         modal.showModal();
       }
-    });
+    });*/
   });
 };
 
@@ -149,11 +158,15 @@ const success = async (pos: GeolocationPosition) => {
     const sodexoBtn = document.querySelector("#sodexo");
     const compassBtn = document.querySelector("#compass");
     const resetBtn = document.querySelector("#reset");
+    const menuFilterTitle = document.querySelector("#menuFilterTitle");
 
     if (!sodexoBtn) {
       throw new Error("compassBtn not found");
     }
     sodexoBtn.addEventListener("click", () => {
+      if (menuFilterTitle) {
+        menuFilterTitle.textContent = "Sodexo ravintolat";
+      }
       const sodexoRestaurants = restaurants.filter(
         (restaurant: Restaurant) => restaurant.company === "Sodexo"
       );
@@ -165,6 +178,9 @@ const success = async (pos: GeolocationPosition) => {
       throw new Error("compassBtn not found");
     }
     compassBtn.addEventListener("click", () => {
+      if (menuFilterTitle) {
+        menuFilterTitle.textContent = "Compass Group ravintolat";
+      }
       const compassRestaurants: Restaurant[] = restaurants.filter(
         (restaurant: Restaurant) => restaurant.company === "Compass Group"
       );
@@ -176,6 +192,9 @@ const success = async (pos: GeolocationPosition) => {
       throw new Error("resetBtn not found");
     }
     resetBtn.addEventListener("click", () => {
+      if (menuFilterTitle) {
+        menuFilterTitle.textContent = "Kaikki ravintolat";
+      }
       createTable(restaurants);
     });
   } catch (error) {

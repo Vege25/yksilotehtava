@@ -6,4 +6,12 @@ interface Course {
   name: string;
   diets: string[];
 }
-export type { Menu };
+
+interface WeekMenu {
+  days: Day[];
+}
+interface Day {
+  date: string;
+  courses: Course[];
+}
+export type { Menu, WeekMenu };
