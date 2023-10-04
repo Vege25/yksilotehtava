@@ -2,10 +2,13 @@ import { Menu, WeekMenu } from "./interfaces/Menu";
 import { Restaurant } from "./interfaces/Restaurant";
 import { addMenuEventListener } from "./functions";
 
-const restaurantRow = (restaurant: Restaurant) => {
+const restaurantRow = (restaurant: Restaurant, index: number) => {
   const { name, address, company } = restaurant;
   const itemContainer = document.createElement("div");
   itemContainer.classList.add("menu-item-container");
+  if (index >= 7) {
+    itemContainer.style.display = "none";
+  }
 
   const imgBg = document.createElement("div");
   imgBg.classList.add("restaurant-image-background");
@@ -71,7 +74,7 @@ const firstRestaurantRow = (restaurant: Restaurant) => {
   info.appendChild(goldenPick);
   info.appendChild(h2);
 
-  const restaurantRowElement = restaurantRow(restaurant);
+  const restaurantRowElement = restaurantRow(restaurant, 0);
 
   firstItemContainer.appendChild(info);
   firstItemContainer.appendChild(restaurantRowElement);
@@ -91,7 +94,8 @@ const getCompanyImageSource = (company: string) => {
 const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
   const { name, address, city, postalCode, phone, company } = restaurant;
   const url = getCompanyImageSource(company);
-  let html = `<div class="dialog-company-container">
+  let html = `
+  <div class="dialog-company-container">
       <div class="dialog-left-info">
         <img src="${url}" alt=""company logo/>
         <h3>${name}</h3>
@@ -101,6 +105,7 @@ const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
       <p>${address} ${postalCode} ${city}</p>
       <p>${phone}</p>
       </div>
+      <button class="dialog-close-button" id="dialogCloseButton">X</button>
       </div>
       <div class="table-container">
       <table>
@@ -127,7 +132,8 @@ const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
 const weeklyRestaurantModal = (restaurant: Restaurant, menu: WeekMenu) => {
   const { name, address, city, postalCode, phone, company } = restaurant;
   const url = getCompanyImageSource(company);
-  let html = `<div class="dialog-company-container">
+  let html = `
+  <div class="dialog-company-container">
       <div class="dialog-left-info">
         <img src="${url}" alt=""company logo/>
         <h3>${name}</h3>
@@ -137,6 +143,7 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: WeekMenu) => {
       <p>${address} ${postalCode} ${city}</p>
       <p>${phone}</p>
       </div>
+      <button class="dialog-close-button" id="dialogCloseButton">X</button>
       </div>
       <div class="table-container">
       <table>
@@ -177,9 +184,28 @@ const errorModal = (message: string) => {
           `;
   return html;
 };
-
-const loginModal = () => {
-  let html = `<div>LOGIN</div> `;
+const formModal = (isLoginForm: boolean) => {
+  let html = `
+  <div class="forms-container">
+    <h2>${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</h2>
+    <div class="slider-container">
+      <input type="checkbox" id="formModeCheckbox" class="slider-checkbox">
+      <label id="login-label" for="formModeCheckbox" class="slider-label">Kirjaudu</label>
+      <label id="register-label" for="formModeCheckbox" class="slider-label">Rekisteröidy</label>
+    </div>
+    <form method="dialog" id="authForm">
+      <input type="text" id="usernameInput" name="username" class="modal-input" autocomplete="name" placeholder="Käyttäjätunnus" minlenght="3" required><br>
+      ${
+        isLoginForm
+          ? ""
+          : `<input type="email" id="emailInput" name="email" class="modal-input" autocomplete="email" placeholder="Sähköposti" required><br>`
+      }
+      <input type="password" id="passwordInput" name="password" class="modal-input" placeholder="Salasana" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$" required><br>
+      <button class="form-button" type="submit" value="submit" id="${
+        isLoginForm ? "loginButton" : "registerButton"
+      }">${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</button>
+    </form>
+  </div> `;
   return html;
 };
 
@@ -188,6 +214,6 @@ export {
   firstRestaurantRow,
   restaurantModal,
   errorModal,
-  loginModal,
+  formModal,
   weeklyRestaurantModal,
 };

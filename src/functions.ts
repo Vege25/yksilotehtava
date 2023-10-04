@@ -1,9 +1,11 @@
 import {
   errorModal,
+  formModal,
   restaurantModal,
   weeklyRestaurantModal,
 } from "./components";
 import { Restaurant } from "./interfaces/Restaurant";
+import { renderForms } from "./main";
 import { apiUrl } from "./variables";
 
 const fetchData = async (url: string, options = {}) => {
@@ -38,7 +40,7 @@ const addMenuEventListener = (
       const menuHtml = restaurantModal(restaurant, menu);
       modal.innerHTML = "";
       modal.insertAdjacentHTML("beforeend", menuHtml);
-
+      addModalCloseListener(modal);
       modal.showModal();
     } catch (error) {
       modal.innerHTML = errorModal((error as Error).message);
@@ -62,7 +64,7 @@ const addMenuEventListener = (
       const menuHtml = weeklyRestaurantModal(restaurant, menu);
       modal.innerHTML = "";
       modal.insertAdjacentHTML("beforeend", menuHtml);
-
+      addModalCloseListener(modal);
       modal.showModal();
     } catch (error) {
       modal.innerHTML = errorModal((error as Error).message);
@@ -71,4 +73,26 @@ const addMenuEventListener = (
   });
 };
 
-export { fetchData, addMenuEventListener };
+const addModalCloseListener = (modal: HTMLDialogElement) => {
+  const modalCloseButton = document.querySelector("#dialogCloseButton");
+  modalCloseButton?.addEventListener("click", () => {
+    console.log("close");
+    modal.close();
+  });
+};
+
+const addFormModeListener = () => {
+  const formModeCheckbox = document.querySelector(
+    "#formModeCheckbox"
+  ) as HTMLInputElement;
+
+  formModeCheckbox?.addEventListener("change", () => {
+    if (formModeCheckbox.checked) {
+      renderForms(false); // send FALSE if REGISTER form
+    } else {
+      renderForms(true); // send TRUE if LOGIN form
+    }
+  });
+};
+
+export { fetchData, addMenuEventListener, addFormModeListener };

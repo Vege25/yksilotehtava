@@ -5,16 +5,16 @@ import {
   restaurantModal,
   restaurantRow,
   firstRestaurantRow,
-  loginModal,
+  formModal,
 } from "./components";
-import { fetchData } from "./functions";
+import { addFormModeListener, fetchData } from "./functions";
 import { Menu } from "./interfaces/Menu";
 import { Restaurant } from "./interfaces/Restaurant";
 import { apiUrl, positionOptions } from "./variables";
 
 const dialog = document.querySelector("dialog");
 const navTitle = document.querySelector(".nav-title");
-const loginButtons = document.querySelectorAll("#loginButton");
+const profileButtons = document.querySelectorAll("#loginButton");
 const hamburgerMenuButton = document.querySelector("#hamburgerMenuButton");
 const navButtons = document.querySelectorAll(".nav-link");
 
@@ -45,6 +45,20 @@ navButtons.forEach((navButton) => {
   });
 });
 
+const showMoreButton = document.querySelector("#showAllRestaurantsBtn");
+showMoreButton?.addEventListener("click", () => {
+  const menuItems = document.querySelectorAll(".menu-item-container");
+
+  menuItems.forEach((menuItem: Element) => {
+    const menuItemDisplayValue = window
+      .getComputedStyle(menuItem as HTMLElement)
+      .getPropertyValue("display");
+    if (menuItemDisplayValue === "none") {
+      (menuItem as HTMLElement).style.display = "block";
+    }
+  });
+});
+
 hamburgerMenuButton?.addEventListener("click", () => {
   openNav();
 });
@@ -52,17 +66,23 @@ const modal = document.querySelector("dialog");
 if (!modal) {
   throw new Error("Modal not found");
 }
-loginButtons.forEach((loginButton) => {
-  loginButton.addEventListener("click", () => {
-    loginModal();
-    const loginDialog = loginModal();
-    modal.innerHTML = "";
-    modal.insertAdjacentHTML("beforeend", loginDialog);
-    (modal as any)?.showModal();
+profileButtons.forEach((profileButton) => {
+  //TODO check if user is logged in then give true
+  //TODO if not give false and register menu will be rendered
+  let isLogin = false;
+  profileButton.addEventListener("click", () => {
+    renderForms(isLogin);
   });
 });
 
-function updateTextContent() {
+export const renderForms = (isLogin: boolean): void => {
+  const authDialog = formModal(isLogin);
+  modal.innerHTML = "";
+  modal.insertAdjacentHTML("beforeend", authDialog);
+  addFormModeListener();
+  (modal as any)?.showModal();
+};
+const updateTextContent = () => {
   if (!navTitle) {
     return;
   }
@@ -71,11 +91,11 @@ function updateTextContent() {
   } else {
     navTitle.textContent = "Ravintolat";
   }
-}
+};
 updateTextContent();
 window.addEventListener("resize", updateTextContent);
 
-function openNav() {
+const openNav = () => {
   const links = document.getElementById("myLinks");
   if (links) {
     if (links.style.display === "block") {
@@ -84,11 +104,7 @@ function openNav() {
       links.style.display = "block";
     }
   }
-}
-
-modal.addEventListener("click", () => {
-  modal.close();
-});
+};
 
 const calculateDistance = (x1: number, y1: number, x2: number, y2: number) =>
   Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
@@ -100,14 +116,14 @@ const createTable = (restaurants: Restaurant[]) => {
   }
   menuContainer.innerHTML = "";
   let isFirstRestaurant = true;
-  restaurants.forEach((restaurant: Restaurant) => {
+  restaurants.forEach((restaurant: Restaurant, index) => {
     // if it is the first restaurant give make different html for it
     const menuItem = isFirstRestaurant
       ? (() => {
           isFirstRestaurant = false;
           return firstRestaurantRow(restaurant);
         })()
-      : restaurantRow(restaurant);
+      : restaurantRow(restaurant, index);
     menuContainer.appendChild(menuItem);
     /*menuItem.addEventListener("click", async () => {
       try {
