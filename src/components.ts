@@ -1,6 +1,8 @@
 import { Menu, WeekMenu } from "./interfaces/Menu";
 import { Restaurant } from "./interfaces/Restaurant";
 import { addMenuEventListener } from "./functions";
+import { formLogin, formRegister } from "./main";
+import { User } from "./interfaces/User";
 
 const restaurantRow = (restaurant: Restaurant, index: number) => {
   const { name, address, company } = restaurant;
@@ -184,10 +186,17 @@ const errorModal = (message: string) => {
           `;
   return html;
 };
+const profileModal = () => {};
+
 const formModal = (isLoginForm: boolean) => {
+  //${handleFormButtonClick(isLoginForm)}*/
+  //pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
   let html = `
   <div class="forms-container">
-    <h2>${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</h2>
+    <div class="forms-top-container">
+    <h2 id="loginH2">${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</h2>
+    <button class="dialog-close-button" id="dialogCloseButton">X</button>
+    </div>
     <div class="slider-container">
       <input type="checkbox" id="formModeCheckbox" class="slider-checkbox">
       <label id="login-label" for="formModeCheckbox" class="slider-label">Kirjaudu</label>
@@ -200,13 +209,42 @@ const formModal = (isLoginForm: boolean) => {
           ? ""
           : `<input type="email" id="emailInput" name="email" class="modal-input" autocomplete="email" placeholder="Sähköposti" required><br>`
       }
-      <input type="password" id="passwordInput" name="password" class="modal-input" placeholder="Salasana" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$" required><br>
+      <input type="password" id="passwordInput" name="password" class="modal-input" placeholder="Salasana" required><br>
       <button class="form-button" type="submit" value="submit" id="${
         isLoginForm ? "loginButton" : "registerButton"
       }">${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</button>
     </form>
   </div> `;
   return html;
+};
+const updateForm = (isLoginForm: boolean) => {
+  //pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
+  const form = document.querySelector("#authForm");
+  if (!form) {
+    return;
+  }
+  form.innerHTML = "";
+  const newForm = `
+      <input type="text" id="usernameInput" name="username" class="modal-input" autocomplete="name" placeholder="Käyttäjätunnus" minlenght="3" required><br>
+      ${
+        isLoginForm
+          ? ""
+          : `<input type="email" id="emailInput" name="email" class="modal-input" autocomplete="email" placeholder="Sähköposti" required><br>`
+      }
+      <input type="password" id="passwordInput" name="password" class="modal-input" placeholder="Salasana"  required><br>
+      <button class="form-button" type="submit" value="submit" id="${
+        isLoginForm ? "loginButton" : "registerButton"
+      }">${isLoginForm ? "Kirjaudu" : "Luo käyttäjä"}</button>`;
+  form.insertAdjacentHTML("beforeend", newForm);
+  const loginH2 = document.querySelector("#loginH2");
+  if (!loginH2) {
+    return;
+  }
+  loginH2.textContent = `${isLoginForm ? "Kirjaudu" : "Luo Käyttäjä"}`;
+};
+const addUserDataToModal = (user: User) => {
+  console.log(user);
+  return `<div>${user.username}</div>`;
 };
 
 export {
@@ -215,5 +253,8 @@ export {
   restaurantModal,
   errorModal,
   formModal,
+  updateForm,
   weeklyRestaurantModal,
+  profileModal,
+  addUserDataToModal,
 };

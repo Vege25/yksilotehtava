@@ -1,6 +1,5 @@
 import {
   errorModal,
-  formModal,
   restaurantModal,
   weeklyRestaurantModal,
 } from "./components";
@@ -95,4 +94,9 @@ const addFormModeListener = () => {
   });
 };
 
-export { fetchData, addMenuEventListener, addFormModeListener };
+export {
+  fetchData,
+  addMenuEventListener,
+  addFormModeListener,
+  addModalCloseListener,
+};

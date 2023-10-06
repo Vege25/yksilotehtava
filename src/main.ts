@@ -6,13 +6,18 @@ import {
   restaurantRow,
   firstRestaurantRow,
   formModal,
+  updateForm,
+  addUserDataToModal,
 } from "./components";
-import { addFormModeListener, fetchData } from "./functions";
-import { Menu } from "./interfaces/Menu";
+import {
+  addFormModeListener,
+  addModalCloseListener,
+  fetchData,
+} from "./functions";
 import { Restaurant } from "./interfaces/Restaurant";
 import { apiUrl, positionOptions } from "./variables";
+import { LoginUser, User } from "./interfaces/User";
 
-const dialog = document.querySelector("dialog");
 const navTitle = document.querySelector(".nav-title");
 const profileButtons = document.querySelectorAll("#loginButton");
 const hamburgerMenuButton = document.querySelector("#hamburgerMenuButton");
@@ -54,7 +59,7 @@ showMoreButton?.addEventListener("click", () => {
       .getComputedStyle(menuItem as HTMLElement)
       .getPropertyValue("display");
     if (menuItemDisplayValue === "none") {
-      (menuItem as HTMLElement).style.display = "block";
+      (menuItem as HTMLElement).style.display = "flex";
     }
   });
 });
@@ -67,19 +72,42 @@ if (!modal) {
   throw new Error("Modal not found");
 }
 profileButtons.forEach((profileButton) => {
-  //TODO check if user is logged in then give true
-  //TODO if not give false and register menu will be rendered
-  let isLogin = false;
+  //TODO check if user is logged in then give true and show profile
+  //TODO if not give false and login menu will be rendered
+  let isLogin: boolean | null;
   profileButton.addEventListener("click", () => {
     renderForms(isLogin);
+    checkToken();
   });
 });
 
-export const renderForms = (isLogin: boolean): void => {
-  const authDialog = formModal(isLogin);
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML("beforeend", authDialog);
+export const renderForms = (isLogin: boolean | null): void => {
+  let authDialog;
+  if (isLogin === null || isLogin === undefined) {
+    authDialog = formModal(true);
+    modal.innerHTML = "";
+    modal.insertAdjacentHTML("beforeend", authDialog);
+    const form = document.querySelector("#authForm");
+
+    form?.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      formLogin();
+    });
+  } else {
+    updateForm(isLogin);
+    console.log("update: " + isLogin);
+    const form = document.querySelector("#authForm");
+    form?.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      if (isLogin) {
+        formLogin();
+      } else {
+        formRegister();
+      }
+    });
+  }
   addFormModeListener();
+  addModalCloseListener(modal);
   (modal as any)?.showModal();
 };
 const updateTextContent = () => {
@@ -125,27 +153,6 @@ const createTable = (restaurants: Restaurant[]) => {
         })()
       : restaurantRow(restaurant, index);
     menuContainer.appendChild(menuItem);
-    /*menuItem.addEventListener("click", async () => {
-      try {
-        // add restaurant data to modal
-        modal.innerHTML = "";
-
-        // fetch menu
-        const menu = await fetchData(
-          apiUrl + `/restaurants/daily/${restaurant._id}/fi`
-        );
-        console.log(menu);
-
-        const menuHtml = restaurantModal(restaurant, menu);
-        modal.innerHTML = "";
-        modal.insertAdjacentHTML("beforeend", menuHtml);
-
-        modal.showModal();
-      } catch (error) {
-        modal.innerHTML = errorModal((error as Error).message);
-        modal.showModal();
-      }
-    });*/
   });
 };
 
@@ -218,5 +225,82 @@ const success = async (pos: GeolocationPosition) => {
     modal.showModal();
   }
 };
+const checkbox = document.getElementById("checkbox");
+checkbox?.addEventListener("change", () => {
+  document.body.classList.toggle("dark");
+});
+export async function formRegister() {
+  const username = (
+    document.querySelector("#usernameInput") as HTMLInputElement
+  ).value;
+  const email = (document.querySelector("#emailInput") as HTMLInputElement)
+    .value;
+  const password = (
+    document.querySelector("#passwordInput") as HTMLInputElement
+  ).value;
+  const formData = {
+    username: username,
+    password: password,
+    email: email,
+  };
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  };
+  const loginData = await fetchData(apiUrl + "/users", options);
+  localStorage.setItem("token", loginData.token);
+  checkToken();
+  console.log(loginData);
+}
+export async function formLogin() {
+  const username = (
+    document.querySelector("#usernameInput") as HTMLInputElement
+  ).value;
+  const password = (
+    document.querySelector("#passwordInput") as HTMLInputElement
+  ).value;
+  // Create a JavaScript object with the form data
+  const formData = {
+    username: username,
+    password: password,
+  };
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  };
+  // Make a POST request
+  const loginData = await fetchData(apiUrl + "/auth/login", options);
+  localStorage.setItem("token", loginData.token);
+  checkToken();
+  console.log(loginData);
+}
+const getUserData = async (token: string): Promise<User> => {
+  const options: RequestInit = {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  };
+  return await fetchData(apiUrl + "/users/token", options);
+};
+const checkToken = async (): Promise<void> => {
+  console.log("token run");
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.log("token not found");
+    return;
+  }
+  console.log("token found");
+  const userData = await getUserData(token);
+  const profileModal = addUserDataToModal(userData);
+  modal.innerHTML = "";
+  modal.insertAdjacentHTML("beforeend", profileModal);
+};
+checkToken();
 
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

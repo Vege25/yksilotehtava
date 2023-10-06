@@ -1,6 +1,7 @@
 /* Base variables and resets ------------ */
 :root {
   --dark: #040d12;
+  --light-dark: #131d22;
   --pure-light: #f0f0f0;
   --light: #e0e2db;
   --dark-green: #183d3d;
@@ -32,6 +33,7 @@
 body {
   margin: 0;
   background-color: var(--light);
+  transition: 0.5s ease;
 }
 body:has(dialog[open]) {
   overflow-y: hidden;
@@ -618,9 +620,8 @@ dialog table tbody tr:hover {
     rgba(147, 177, 166, 1) 98%
   );
 }
+
 .modal-input {
-  margin-bottom: 20px;
-  margin-top: 10px;
   align-self: flex-start;
   width: 100%;
   height: 40px;
@@ -668,6 +669,29 @@ form {
   overflow: hidden;
   border: 2px grey solid;
   border-radius: 10px;
+  margin-bottom: 40px;
+}
+.form-button {
+  padding: 10px 20px;
+  background-color: var(--green);
+  color: var(--pure-light);
+  border-radius: 10px;
+  border: solid 2px var(--dark-green);
+  font-size: 1em;
+  transform: scale(0.9);
+  transition: 0.5s ease;
+}
+.form-button:hover {
+  background-color: var(--light-green);
+  transform: scale(1);
+  cursor: pointer;
+}
+.forms-top-container {
+  display: flex;
+  align-items: center;
+}
+.forms-top-container button {
+  margin-left: auto;
 }
 
 .slider-label {
@@ -696,6 +720,7 @@ form {
 #register-label {
   background-color: var(--light);
   background-color: var(--pure-light);
+  color: var(--dark);
 }
 .slider-checkbox:checked ~ #login-label {
   background: var(--pure-light);
@@ -710,6 +735,114 @@ form {
     rgba(147, 177, 166, 1) 69%
   );
   color: var(--pure-light);
+}
+
+/* Dark mode styles*/
+.dark-mode-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  cursor: pointer;
+}
+.dark-mode-container::before {
+  content: "dark";
+  display: block;
+  color: var(--light-green);
+  margin-right: 10px;
+}
+.dark-mode-container::after {
+  content: "light";
+  display: block;
+  color: var(--pure-light);
+  margin-left: 10px;
+}
+body.dark .dark-mode-container::before {
+  color: var(--pure-light);
+}
+body.dark .dark-mode-container::after {
+  color: var(--light-green);
+}
+.dark-mode-container:hover .dark-mode-icon {
+  color: var(--light-green);
+}
+.dark-mode-icon {
+  color: var(--pure-light);
+}
+body.dark {
+  background-color: var(--light-dark);
+} /* #9b59b6 */
+body.dark .menu-item-container {
+  background-color: var(--dark);
+  transition: 0.5s ease;
+}
+body.dark .course-nav button {
+  background-color: var(--light-dark);
+  color: var(--pure-light);
+}
+body.dark .menu-food-title,
+body.dark .menu-filter-title,
+body.dark .course-nav button:hover {
+  color: var(--light-green);
+}
+body.dark .menu-ingredients,
+body.dark .mini-nav-text,
+body.dark .menu-text {
+  color: var(--light);
+}
+body.dark dialog {
+  background-color: var(--dark);
+  border-color: var(--light-green);
+}
+body.dark .dialog-left-info img {
+  background-color: var(--light);
+  border-radius: 20px;
+  padding: 0.5em;
+  border: 2px solid var(--light-green);
+}
+body.dark .dialog-company-container {
+  color: var(--pure-light);
+}
+body.dark .forms-top-container h2 {
+  color: var(--pure-light);
+}
+.checkbox {
+  opacity: 0;
+  position: absolute;
+}
+.checkbox-label {
+  background-color: var(--light-green);
+  width: 50px;
+  height: 26px;
+  border-radius: 50px;
+  position: relative;
+  padding: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: 0.2s ease;
+}
+.fa-moon {
+  color: var(--light-green);
+}
+.fa-sun {
+  color: var(--light-gold);
+}
+.checkbox-label .ball {
+  background-color: var(--green);
+  width: 22px;
+  height: 22px;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  transition: transform 0.2s linear;
+}
+.checkbox:checked + .checkbox-label .ball {
+  transform: translateX(24px);
+}
+.checkbox:checked + .checkbox-label {
+  background-color: var(--dark-green);
 }
 
 /* media rules -------------- */
@@ -762,7 +895,7 @@ form {
   }
   .dialog-close-button {
     margin: auto;
-    margin-top: 20px;
+    margin-right: 0;
   }
   .dialog-company-container {
     flex-direction: column;
@@ -908,6 +1041,17 @@ form {
   }
   .first-menu-item-container {
     grid-column: span 2; /* Span across all three columns */
+  }
+  .dark-mode-container {
+    margin-right: 10px;
+  }
+  .dark-mode-container::before {
+    content: "";
+    display: none;
+  }
+  .dark-mode-container::after {
+    content: "";
+    display: none;
   }
 }
 

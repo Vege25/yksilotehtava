@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="module" src="/src/main.ts"></script>
     <link rel="stylesheet" href="src/style.css" />
+    <script
+      src="https://kit.fontawesome.com/c02d3fc986.js"
+      crossorigin="anonymous"
+    ></script>
     <title>Ravintolat</title>
   </head>
   <body>
@@ -16,16 +20,24 @@
       <nav>
         <div class="topnav">
           <a href="#" class="nav-title-parent"
-            ><h2 class="nav-title">Ravintolat</h2></a
-          >
+            ><h2 class="nav-title">Ravintolat</h2>
+          </a>
           <div id="myLinks">
             <a id="frontPage" class="nav-link" href="#">Etusivu</a>
             <a id="restaurants" class="nav-link">Ravintolat</a>
             <a id="map" class="nav-link">Yhteystiedot</a>
+            <div class="dark-mode-container">
+              <input type="checkbox" class="checkbox" id="checkbox" />
+              <label for="checkbox" class="checkbox-label">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+                <span class="ball"></span>
+              </label>
+            </div>
             <a href="#" class="nav-right" id="loginButton">Profiili</a>
           </div>
           <a id="hamburgerMenuButton" class="icon">
-            <i class="fa fa-bars">-</i>
+            <i class="fa fa-bars"></i>
           </a>
         </div>
       </nav>
