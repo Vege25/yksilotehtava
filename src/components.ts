@@ -264,8 +264,15 @@ const addUserDataToModal = (user: User) => {
   return `
   <div class="dialog-profile-container">
   <div class="dialog-profile-main profile-item-container">
-    <input id="profilePicUploadInput" type="file" name="pfp">
-    <img id="profileImage" src="${imageSrc}" alt="profile picture" for="pfp"/>
+    <div class="profile-pfp-update-container">
+      <input id="profilePicUploadInput" type="file" name="pfp">
+      <div class="pfp-container">
+        <label for="profilePicUploadInput" >
+          <img id="profileImage" src="${imageSrc}" alt="profile picture" for="pfp">
+          <i class="fa-solid fa-camera" for="pfp"></i>
+        </label>
+      </div>
+    </div>
     <h2 class="profile-username">${user.username} profiili</h2>
     <form method="dialog" id="updateForm">
       <input type="text" name="username" id="usernameInput" class="modal-input" autocomplete="name" placeholder="${user.username}" minlenght="3" required></input><br>

@@ -5,7 +5,7 @@ import {
   weeklyRestaurantModal,
 } from "./components";
 import { Restaurant } from "./interfaces/Restaurant";
-import { formUpdate, renderForms } from "./main";
+import { formUpdate, renderForms, uploadPfp } from "./main";
 import { apiUrl } from "./variables";
 
 const fetchData = async (url: string, options = {}) => {
@@ -123,9 +123,22 @@ const addLogOutListener = (modal: HTMLDialogElement) => {
 
 const addUpdateListener = () => {
   const updateForm = document.querySelector("#updateForm");
+  const profileImage = document.querySelector("#profileImage");
+  const fileInput = document.querySelector("#profilePicUploadInput");
   updateForm?.addEventListener("submit", (evt) => {
     evt.preventDefault();
     formUpdate();
+  });
+
+  profileImage?.addEventListener("click", () => {
+    fileInput?.click();
+  });
+  fileInput?.addEventListener("change", (evt: Event) => {
+    const input = evt.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (file) {
+      uploadPfp(file);
+    }
   });
 };
 

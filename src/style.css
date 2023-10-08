@@ -815,6 +815,30 @@ hr {
 #profilePicUploadInput {
   visibility: hidden;
 }
+.pfp-container {
+  position: relative;
+  display: inline-block;
+  transform: scale(0.9);
+  transition: 0.5s ease;
+}
+.pfp-container i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  font-size: 2em;
+}
+.pfp-container:hover .fa-camera {
+  opacity: 0.75;
+}
+.pfp-container:hover #profileImage {
+  border: 3px solid var(--green);
+}
+.pfp-container:hover {
+  cursor: pointer;
+  transform: scale(1);
+}
 
 /* Dark mode styles*/
 .dark-mode-container {

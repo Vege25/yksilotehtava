@@ -317,6 +317,24 @@ export const formUpdate = async () => {
   checkToken();
   console.log(updateData);
 };
+export const uploadPfp = async (pfp: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
+  const formData = new FormData();
+  formData.append("avatar", pfp);
+
+  const options: RequestInit = {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+    body: formData,
+  };
+  await fetchData(apiUrl + "/users/avatar", options);
+  checkToken();
+};
 const getUserData = async (token: string): Promise<User> => {
   const options: RequestInit = {
     headers: {
