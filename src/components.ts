@@ -3,6 +3,7 @@ import { Restaurant } from "./interfaces/Restaurant";
 import { addMenuEventListener } from "./functions";
 import { formLogin, formRegister } from "./main";
 import { User } from "./interfaces/User";
+import { apiUrl } from "./variables";
 
 const restaurantRow = (restaurant: Restaurant, index: number) => {
   const { name, address, company } = restaurant;
@@ -243,8 +244,54 @@ const updateForm = (isLoginForm: boolean) => {
   loginH2.textContent = `${isLoginForm ? "Kirjaudu" : "Luo Käyttäjä"}`;
 };
 const addUserDataToModal = (user: User) => {
+  let imageSrc;
+  if (user.avatar != null) {
+    imageSrc =
+      "https://student-restaurants.azurewebsites.net/uploads/" + user.avatar;
+  } else {
+    imageSrc = "../images/defaultIcon.jpeg";
+  }
   console.log(user);
-  return `<div>${user.username}</div>`;
+  /*<div class="dark-mode-container">
+        <input type="checkbox" class="checkbox" id="checkbox">
+        <label for="checkbox" class="checkbox-label">
+          <i class="fas fa-moon"></i>
+          <i class="fas fa-sun"></i>
+          <span class="ball"></span>
+        </label>
+      </div>*/
+
+  return `
+  <div class="dialog-profile-container">
+  <div class="dialog-profile-main profile-item-container">
+    <input id="profilePicUploadInput" type="file" name="pfp">
+    <img id="profileImage" src="${imageSrc}" alt="profile picture" for="pfp"/>
+    <h2 class="profile-username">${user.username} profiili</h2>
+    <form method="dialog" id="updateForm">
+      <input type="text" name="username" id="usernameInput" class="modal-input" autocomplete="name" placeholder="${user.username}" minlenght="3" required></input><br>
+      <input type="email" name="email" id="emailInput" name="email" class="modal-input" autocomplete="email" placeholder="${user.email}" required></input>
+      <button class="form-button" type="submit" value="submit" id="saveProfileButton">Tallenna</button>
+    </form>
+  </div>
+  <div class="dialog-profile-settings profile-side profile-item-container">
+    <div class="profile-setting-top profile-top">
+      <h3>Sivusto asetukset</h3>
+      <button class="dialog-close-button" id="dialogCloseButton">X</button>
+    </div><hr>
+    <div class="profile-setting-main">
+      <button class="form-button" id="logOutButton">Kirjaudu ulos</button>
+    </div>
+  </div>
+  <div class="dialog-profile-favourite profile-side profile-item-container">
+    <div class="profile-favourite-top profile-top">
+      <h3>Suosikki ravintola</h3>
+    </div><hr>
+    <div class="profile-favourite-main"  id="favouriteMain">
+      <p>Ei suosikkia</p>
+    </div>
+  </div>
+  </div>
+  `;
 };
 
 export {

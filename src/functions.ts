@@ -1,10 +1,11 @@
 import {
   errorModal,
+  formModal,
   restaurantModal,
   weeklyRestaurantModal,
 } from "./components";
 import { Restaurant } from "./interfaces/Restaurant";
-import { renderForms } from "./main";
+import { formUpdate, renderForms } from "./main";
 import { apiUrl } from "./variables";
 
 const fetchData = async (url: string, options = {}) => {
@@ -73,10 +74,12 @@ const addMenuEventListener = (
 };
 
 const addModalCloseListener = (modal: HTMLDialogElement) => {
-  const modalCloseButton = document.querySelector("#dialogCloseButton");
-  modalCloseButton?.addEventListener("click", () => {
-    console.log("close");
-    modal.close();
+  const modalCloseButtons = document.querySelectorAll("#dialogCloseButton");
+  modalCloseButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      console.log("close");
+      modal.close();
+    });
   });
 };
 
@@ -94,9 +97,44 @@ const addFormModeListener = () => {
   });
 };
 
+const addDarkModeSwitchListener = () => {
+  console.log("change");
+  const checkboxes = document.querySelectorAll("#checkbox");
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      document.body.classList.toggle("dark");
+    });
+  });
+};
+
+const addLogOutListener = (modal: HTMLDialogElement) => {
+  const logOutBtns = document.querySelectorAll("#logOutButton");
+  logOutBtns.forEach((logOutBtn) => {
+    logOutBtn.addEventListener("click", () => {
+      localStorage.removeItem("token");
+      const newForm = formModal(true);
+      modal.innerHTML = "";
+      modal.insertAdjacentHTML("beforeend", newForm);
+      addFormModeListener();
+      addModalCloseListener(modal);
+    });
+  });
+};
+
+const addUpdateListener = () => {
+  const updateForm = document.querySelector("#updateForm");
+  updateForm?.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+    formUpdate();
+  });
+};
+
 export {
   fetchData,
   addMenuEventListener,
   addFormModeListener,
   addModalCloseListener,
+  addDarkModeSwitchListener,
+  addLogOutListener,
+  addUpdateListener,
 };

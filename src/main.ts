@@ -10,8 +10,11 @@ import {
   addUserDataToModal,
 } from "./components";
 import {
+  addDarkModeSwitchListener,
   addFormModeListener,
+  addLogOutListener,
   addModalCloseListener,
+  addUpdateListener,
   fetchData,
 } from "./functions";
 import { Restaurant } from "./interfaces/Restaurant";
@@ -27,16 +30,24 @@ navButtons.forEach((navButton) => {
   navButton.addEventListener("click", () => {
     const miniNav = document.querySelector(".mini-nav");
     const restaurantMap = document.querySelector("#restaurantMap");
-    if (!miniNav || !restaurantMap) {
+    const body = document.querySelector("body");
+    if (!miniNav || !restaurantMap || !body) {
       return;
     }
     let navElement;
-    if (navButton.id === "restaurants") {
-      navElement = miniNav;
-    } else if (navButton.id === "map") {
-      navElement = restaurantMap;
-    } else {
-      return;
+    switch (navButton.id) {
+      case "restaurants":
+        navElement = miniNav;
+        break;
+      case "map":
+        navElement = restaurantMap;
+        break;
+      case "frontPage" || "navTitleLink":
+        navElement = body;
+        break;
+      default:
+        console.log("no nav elements");
+        return;
     }
 
     window.scrollTo({
@@ -225,11 +236,8 @@ const success = async (pos: GeolocationPosition) => {
     modal.showModal();
   }
 };
-const checkbox = document.getElementById("checkbox");
-checkbox?.addEventListener("change", () => {
-  document.body.classList.toggle("dark");
-});
-export async function formRegister() {
+
+const formRegister = async () => {
   const username = (
     document.querySelector("#usernameInput") as HTMLInputElement
   ).value;
@@ -250,19 +258,26 @@ export async function formRegister() {
     },
     body: JSON.stringify(formData),
   };
-  const loginData = await fetchData(apiUrl + "/users", options);
+  const loginOptions = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ username: username, password: password }),
+  };
+  const postData = await fetchData(apiUrl + "/users", options);
+  console.log(postData);
+  const loginData = await fetchData(apiUrl + "/auth/login", loginOptions);
   localStorage.setItem("token", loginData.token);
   checkToken();
-  console.log(loginData);
-}
-export async function formLogin() {
+};
+const formLogin = async () => {
   const username = (
     document.querySelector("#usernameInput") as HTMLInputElement
   ).value;
   const password = (
     document.querySelector("#passwordInput") as HTMLInputElement
   ).value;
-  // Create a JavaScript object with the form data
   const formData = {
     username: username,
     password: password,
@@ -274,12 +289,34 @@ export async function formLogin() {
     },
     body: JSON.stringify(formData),
   };
-  // Make a POST request
   const loginData = await fetchData(apiUrl + "/auth/login", options);
   localStorage.setItem("token", loginData.token);
   checkToken();
   console.log(loginData);
-}
+};
+export const formUpdate = async () => {
+  const username = (
+    document.querySelector("#usernameInput") as HTMLInputElement
+  ).value;
+  const email = (document.querySelector("#emailInput") as HTMLInputElement)
+    .value;
+  const token = localStorage.getItem("token");
+  const formData = {
+    username: username,
+    password: email,
+  };
+  const options = {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify(formData),
+  };
+  const updateData = await fetchData(apiUrl + "/users", options);
+  checkToken();
+  console.log(updateData);
+};
 const getUserData = async (token: string): Promise<User> => {
   const options: RequestInit = {
     headers: {
@@ -289,18 +326,21 @@ const getUserData = async (token: string): Promise<User> => {
   return await fetchData(apiUrl + "/users/token", options);
 };
 const checkToken = async (): Promise<void> => {
-  console.log("token run");
   const token = localStorage.getItem("token");
   if (!token) {
     console.log("token not found");
     return;
   }
-  console.log("token found");
   const userData = await getUserData(token);
   const profileModal = addUserDataToModal(userData);
   modal.innerHTML = "";
   modal.insertAdjacentHTML("beforeend", profileModal);
+  addModalCloseListener(modal);
+  addLogOutListener(modal);
+  addUpdateListener();
 };
 checkToken();
+addModalCloseListener(modal);
+addDarkModeSwitchListener();
 
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

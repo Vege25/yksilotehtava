@@ -124,6 +124,7 @@ nav {
 }
 .nav-title:hover {
   color: #93b1a6;
+  cursor: pointer;
 }
 .nav-right {
   color: var(--light-green) !important;
@@ -329,9 +330,6 @@ aside {
   -webkit-box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
   -moz-box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
   box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
-  /*-webkit-box-shadow: 0px 0px 10px 2px rgba(24, 61, 61, 1);
-  -moz-box-shadow: 0px 0px 10px 2px rgba(24, 61, 61, 1);
-  box-shadow: 0px 0px 10px 2px rgba(24, 61, 61, 1);*/
 }
 .menu-item-container:hover .restaurant-image-background {
   -webkit-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
@@ -634,6 +632,7 @@ dialog table tbody tr:hover {
   border-radius: 5px;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+  margin-bottom: 10px;
 }
 .modal-input:valid {
   border-left-color: var(--light-green);
@@ -736,6 +735,86 @@ form {
   );
   color: var(--pure-light);
 }
+/* Modal profile --  */
+dialog:has(.dialog-profile-container) {
+  background-color: var(--light);
+}
+.dialog-profile-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  height: 100%;
+  gap: 20px;
+}
+.profile-item-container {
+  background-color: var(--pure-light);
+  border-radius: 10px;
+  border: solid 1px var(--light-green);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.26);
+  -moz-box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.26);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.26);
+}
+.profile-item-container:hover {
+  border-radius: 10px;
+  border-color: var(--dark-green);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
+  -moz-box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
+  box-shadow: 0px 0px 10px 2px rgba(92, 131, 116, 1);
+}
+.dialog-profile-main {
+  background: var(--light-green);
+  border: 2px solid var(--dark-green);
+  grid-column: 1 / 2;
+  grid-row: 1 / 4;
+  padding: 1em;
+  max-width: 300px;
+}
+.dialog-profile-settings {
+  grid-column: 2 / 3;
+}
+.dialog-profile-favourite {
+  grid-column: 2 / 3;
+  grid-row: 2 / 4;
+}
+.profile-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em 1em;
+}
+hr {
+  margin-bottom: 10px;
+}
+.profile-side {
+  width: 300px;
+}
+.profile-top h3 {
+  justify-content: space-between;
+}
+.dialog-profile-main img {
+  display: block;
+  width: 200px;
+  border-radius: 50%;
+  border: 1px solid var(--dark);
+  margin: auto;
+  margin-bottom: 10px;
+}
+.dialog-profile-main h2 {
+  font-size: 1.2em;
+  font-family: defaultBold, sans-serif;
+  margin-bottom: 20px;
+}
+.dialog-profile-main button {
+  margin-top: 10px;
+}
+.profile-setting-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#profilePicUploadInput {
+  visibility: hidden;
+}
 
 /* Dark mode styles*/
 .dark-mode-container {
@@ -745,13 +824,13 @@ form {
   cursor: pointer;
 }
 .dark-mode-container::before {
-  content: "dark";
+  content: "Light";
   display: block;
   color: var(--light-green);
   margin-right: 10px;
 }
 .dark-mode-container::after {
-  content: "light";
+  content: "Dark";
   display: block;
   color: var(--pure-light);
   margin-left: 10px;
@@ -843,6 +922,19 @@ body.dark .forms-top-container h2 {
 }
 .checkbox:checked + .checkbox-label {
   background-color: var(--dark-green);
+}
+body.dark .first-menu-item-container .course-nav button:hover {
+  border-color: var(--light-green) !important;
+  color: var(--light-green) !important;
+}
+body.dark .profile-side {
+  background-color: var(--light-dark);
+  color: var(--pure-light);
+}
+body.dark .profile-item-container hr {
+  height: 1px;
+  background-color: var(--light-green);
+  border: none;
 }
 
 /* media rules -------------- */
