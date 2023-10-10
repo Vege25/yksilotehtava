@@ -3,7 +3,10 @@ import { Restaurant } from "./interfaces/Restaurant";
 import { addMenuEventListener } from "./functions";
 import { User } from "./interfaces/User";
 
-const restaurantRow = (restaurant: Restaurant, index: number) => {
+const restaurantRow = (
+  restaurant: Restaurant,
+  index: number
+): HTMLDivElement => {
   const { name, address, company } = restaurant;
   const itemContainer = document.createElement("div");
   itemContainer.classList.add("menu-item-container");
@@ -61,7 +64,7 @@ const restaurantRow = (restaurant: Restaurant, index: number) => {
 
   return itemContainer;
 };
-const firstRestaurantRow = (restaurant: Restaurant) => {
+const firstRestaurantRow = (restaurant: Restaurant): HTMLDivElement => {
   const firstItemContainer = document.createElement("div");
   firstItemContainer.classList.add("first-menu-item-container");
 
@@ -82,17 +85,17 @@ const firstRestaurantRow = (restaurant: Restaurant) => {
   return firstItemContainer;
 };
 
-const getCompanyImageSource = (company: string) => {
+const getCompanyImageSource = (company: string): string => {
   if (company === "Sodexo") {
-    return "../images/sodexo.png";
+    return "./images/sodexo.png";
   } else if (company === "Compass Group") {
-    return "../images/compass.png";
+    return "./images/compass.png";
   } else {
-    return "../images/burger.png";
+    return "./images/burger.png";
   }
 };
 
-const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
+const restaurantModal = (restaurant: Restaurant, menu: Menu): string => {
   const { name, address, city, postalCode, phone, company } = restaurant;
   const url = getCompanyImageSource(company);
   let html = `
@@ -130,7 +133,10 @@ const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
   return html;
 };
 
-const weeklyRestaurantModal = (restaurant: Restaurant, menu: WeekMenu) => {
+const weeklyRestaurantModal = (
+  restaurant: Restaurant,
+  menu: WeekMenu
+): string => {
   const { name, address, city, postalCode, phone, company } = restaurant;
   const url = getCompanyImageSource(company);
   let html = `
@@ -178,16 +184,15 @@ const weeklyRestaurantModal = (restaurant: Restaurant, menu: WeekMenu) => {
   return html;
 };
 
-const errorModal = (message: string) => {
+const errorModal = (message: string): string => {
   const html = `
           <h3>Error</h3>
           <p>${message}</p>
           `;
   return html;
 };
-const profileModal = () => {};
 
-const formModal = (isLoginForm: boolean) => {
+const formModal = (isLoginForm: boolean): string => {
   let html = `
   <div class="forms-container">
     <div class="forms-top-container">
@@ -214,7 +219,7 @@ const formModal = (isLoginForm: boolean) => {
   </div> `;
   return html;
 };
-const updateForm = (isLoginForm: boolean) => {
+const updateForm = (isLoginForm: boolean): void => {
   const form = document.querySelector("#authForm");
   if (!form) {
     return;
@@ -238,13 +243,13 @@ const updateForm = (isLoginForm: boolean) => {
   }
   loginH2.textContent = `${isLoginForm ? "Kirjaudu" : "Luo Käyttäjä"}`;
 };
-const addUserDataToModal = (user: User) => {
-  let imageSrc;
+const addUserDataToModal = (user: User): string => {
+  let imageSrc: string;
   if (user.avatar != null) {
     imageSrc =
       "https://student-restaurants.azurewebsites.net/uploads/" + user.avatar;
   } else {
-    imageSrc = "../images/defaultIcon.jpeg";
+    imageSrc = "./images/defaultIcon.jpeg"; // here
   }
   return `
   <div class="dialog-profile-container">
@@ -294,6 +299,5 @@ export {
   formModal,
   updateForm,
   weeklyRestaurantModal,
-  profileModal,
   addUserDataToModal,
 };

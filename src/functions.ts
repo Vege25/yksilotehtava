@@ -9,12 +9,12 @@ import { User } from "./interfaces/User";
 import { formUpdate, renderForms, uploadPfp } from "./main";
 import { apiUrl } from "./variables";
 
-const fetchData = async (url: string, options = {}) => {
+const fetchData = async (url: string, options = {}): Promise<any> => {
   const response = await fetch(url, options);
   if (!response.ok) {
     throw new Error(`Error ${response.status} occured`);
   }
-  const json = response.json();
+  const json = await response.json();
   return json;
 };
 const checkToken = async (): Promise<void> => {
@@ -62,8 +62,12 @@ const updateTextContent = () => {
     navTitle.textContent = "Ravintolat";
   }
 };
-const calculateDistance = (x1: number, y1: number, x2: number, y2: number) =>
-  Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+const calculateDistance = (
+  x1: number,
+  y1: number,
+  x2: number,
+  y2: number
+): number => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 // Listeners ---------------------
 
@@ -148,12 +152,27 @@ const addFormModeListener = () => {
 
 const addDarkModeSwitchListener = () => {
   console.log("change");
-  const checkboxes = document.querySelectorAll("#checkbox");
-  checkboxes.forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-      document.body.classList.toggle("dark");
-    });
+  const checkbox = document.querySelector("#checkbox");
+  checkbox?.addEventListener("change", () => {
+    document.body.classList.toggle("dark");
+    const themeStatus = (checkbox as HTMLInputElement).checked
+      ? "dark"
+      : "light";
+
+    localStorage.setItem("theme", themeStatus);
   });
+};
+
+const checkForUserTheme = () => {
+  const theme = localStorage.getItem("theme");
+  const checkbox = document.querySelector("#checkbox");
+  if (!checkbox) {
+    return;
+  }
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+    (checkbox as HTMLInputElement).checked = true;
+  }
 };
 
 const addLogOutListener = () => {
@@ -176,9 +195,9 @@ const addUpdateListener = () => {
   });
 
   profileImage?.addEventListener("click", () => {
-    (fileInput as any)?.click();
+    (fileInput as HTMLInputElement)?.click();
   });
-  fileInput?.addEventListener("change", (evt: Event) => {
+  (fileInput as HTMLInputElement)?.addEventListener("change", (evt: Event) => {
     const input = evt.target as HTMLInputElement;
     const file = input.files?.[0];
     if (file) {
@@ -201,26 +220,29 @@ const addNavButtonsListener = () => {
   const navButtons = document.querySelectorAll(".nav-link");
   navButtons.forEach((navButton) => {
     navButton.addEventListener("click", () => {
-      const miniNav = document.querySelector(".mini-nav");
-      const restaurantMap = document.querySelector("#restaurantMap");
       const body = document.querySelector("body");
-      if (!miniNav || !restaurantMap || !body) {
-        return;
-      }
       let navElement;
       switch (navButton.id) {
         case "restaurants":
+          const miniNav = document.querySelector(".mini-nav");
           navElement = miniNav;
           break;
         case "map":
+          const restaurantMap = document.querySelector("#restaurantMap");
           navElement = restaurantMap;
           break;
-        case "frontPage" || "navTitleLink":
+        case "frontPage":
+          navElement = body;
+          break;
+        case "navTitleLink":
           navElement = body;
           break;
         default:
           console.log("no nav elements");
           return;
+      }
+      if (!navElement) {
+        return;
       }
 
       window.scrollTo({
@@ -257,12 +279,14 @@ const addShowMoreListener = () => {
   });
 };
 const runAppStartListeners = () => {
+  checkForUserTheme();
   addModalCloseListener();
   addDarkModeSwitchListener();
   addProfileButtonListener();
   addNavButtonsListener();
   addHamburgerMenuListener();
   addShowMoreListener();
+  updateTextContent();
 };
 
 export {
@@ -270,15 +294,8 @@ export {
   addMenuEventListener,
   addFormModeListener,
   addModalCloseListener,
-  addDarkModeSwitchListener,
-  addLogOutListener,
-  addUpdateListener,
-  addProfileButtonListener,
   checkToken,
-  addNavButtonsListener,
-  addHamburgerMenuListener,
   updateTextContent,
-  addShowMoreListener,
   runAppStartListeners,
   calculateDistance,
 };

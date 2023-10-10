@@ -1,5 +1,4 @@
 import "./style.css";
-
 import {
   errorModal,
   restaurantRow,
@@ -25,9 +24,8 @@ if (!modal) {
 }
 
 export const renderForms = (isLogin: boolean | null): void => {
-  let authDialog;
   if (isLogin === null || isLogin === undefined) {
-    authDialog = formModal(true);
+    const authDialog: string = formModal(true);
     modal.innerHTML = "";
     modal.insertAdjacentHTML("beforeend", authDialog);
     const form = document.querySelector("#authForm");
@@ -55,7 +53,7 @@ export const renderForms = (isLogin: boolean | null): void => {
   }
 };
 
-const createTable = (restaurants: Restaurant[]) => {
+const createTable = (restaurants: Restaurant[]): void => {
   const menuContainer = document.querySelector(".menu-container");
   if (!menuContainer) {
     throw new Error("Table not found");
@@ -74,11 +72,11 @@ const createTable = (restaurants: Restaurant[]) => {
   });
 };
 
-const error = (err: GeolocationPositionError) => {
+const error = (err: GeolocationPositionError): void => {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 };
 
-const success = async (pos: GeolocationPosition) => {
+const success = async (pos: GeolocationPosition): Promise<void> => {
   try {
     const crd = pos.coords;
     const restaurants = await fetchData(apiUrl + "/restaurants");
@@ -144,7 +142,7 @@ const success = async (pos: GeolocationPosition) => {
   }
 };
 
-const formRegister = async () => {
+const formRegister = async (): Promise<void> => {
   const username = (
     document.querySelector("#usernameInput") as HTMLInputElement
   ).value;
@@ -178,7 +176,7 @@ const formRegister = async () => {
   localStorage.setItem("token", loginData.token);
   checkToken();
 };
-const formLogin = async () => {
+const formLogin = async (): Promise<void> => {
   const username = (
     document.querySelector("#usernameInput") as HTMLInputElement
   ).value;
@@ -201,7 +199,7 @@ const formLogin = async () => {
   checkToken();
   console.log(loginData);
 };
-export const formUpdate = async () => {
+export const formUpdate = async (): Promise<void> => {
   const username = (
     document.querySelector("#usernameInput") as HTMLInputElement
   ).value;
@@ -224,7 +222,7 @@ export const formUpdate = async () => {
   checkToken();
   console.log(updateData);
 };
-export const uploadPfp = async (pfp: File) => {
+export const uploadPfp = async (pfp: File): Promise<void> => {
   const token = localStorage.getItem("token");
   if (!token) {
     return;
@@ -242,7 +240,7 @@ export const uploadPfp = async (pfp: File) => {
   await fetchData(apiUrl + "/users/avatar", options);
   checkToken();
 };
-export const uploadFavRestaurant = async (pfp: string) => {
+export const uploadFavRestaurant = async (pfp: string): Promise<void> => {
   const token = localStorage.getItem("token");
   if (!token) {
     return;
@@ -261,9 +259,8 @@ export const uploadFavRestaurant = async (pfp: string) => {
   checkToken();
 };
 
-checkToken();
-updateTextContent();
 runAppStartListeners();
+checkToken();
 
 window.addEventListener("resize", updateTextContent);
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

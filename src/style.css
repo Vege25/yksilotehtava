@@ -12,15 +12,15 @@
 }
 @font-face {
   font-family: "title";
-  src: url("fonts/Pacifico-Regular.ttf");
+  src: url("../public/fonts/Pacifico-Regular.ttf");
 }
 @font-face {
   font-family: "defaultFont";
-  src: url("fonts/Lexend-Regular.ttf");
+  src: url("../public/fonts/Lexend-Regular.ttf");
 }
 @font-face {
   font-family: "defaultBold";
-  src: url("fonts/Lexend-Bold.ttf");
+  src: url("../public/fonts/Lexend-Bold.ttf");
 }
 
 * {
@@ -175,7 +175,7 @@ section {
 .main-bg-img {
   width: 100%;
   height: 300px;
-  background-image: url("images/burger4.avif");
+  background-image: url("../public/images/burger4.avif");
   background-position: center;
   background-size: cover;
   right: 0;
@@ -221,7 +221,7 @@ section {
   font-size: 1.2em;
 }
 article {
-  background-image: url("./images/bg.jpeg");
+  background-image: url("../public/images/bg.jpeg");
   background-position: center;
   background-size: cover;
   position: relative;
@@ -243,7 +243,7 @@ article {
   margin: auto;
   border-radius: 20px;
   transition-duration: 1s;
-  background-image: url("./images/burger.png");
+  background-image: url("../public/images/burger.png");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -403,7 +403,7 @@ aside {
   color: var(--pure-light);
 }
 .restaurant-image-background {
-  background-image: url("images/background.avif");
+  background-image: url("../public/images/background.avif");
   background-size: contain;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
@@ -745,6 +745,7 @@ dialog:has(.dialog-profile-container) {
   overflow-y: auto;
   height: 100%;
   gap: 20px;
+  overflow: visible;
 }
 .profile-item-container {
   background-color: var(--pure-light);
