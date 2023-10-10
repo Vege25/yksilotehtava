@@ -1,9 +1,7 @@
 import { Menu, WeekMenu } from "./interfaces/Menu";
 import { Restaurant } from "./interfaces/Restaurant";
 import { addMenuEventListener } from "./functions";
-import { formLogin, formRegister } from "./main";
 import { User } from "./interfaces/User";
-import { apiUrl } from "./variables";
 
 const restaurantRow = (restaurant: Restaurant, index: number) => {
   const { name, address, company } = restaurant;
@@ -100,7 +98,7 @@ const restaurantModal = (restaurant: Restaurant, menu: Menu) => {
   let html = `
   <div class="dialog-company-container">
       <div class="dialog-left-info">
-        <img src="${url}" alt=""company logo/>
+        <img src="${url}" alt="company logo"/>
         <h3>${name}</h3>
       </div>
       <div class="dialog-company-info">
@@ -190,8 +188,6 @@ const errorModal = (message: string) => {
 const profileModal = () => {};
 
 const formModal = (isLoginForm: boolean) => {
-  //${handleFormButtonClick(isLoginForm)}*/
-  //pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
   let html = `
   <div class="forms-container">
     <div class="forms-top-container">
@@ -219,7 +215,6 @@ const formModal = (isLoginForm: boolean) => {
   return html;
 };
 const updateForm = (isLoginForm: boolean) => {
-  //pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$"
   const form = document.querySelector("#authForm");
   if (!form) {
     return;
@@ -230,7 +225,7 @@ const updateForm = (isLoginForm: boolean) => {
       ${
         isLoginForm
           ? ""
-          : `<input type="email" id="emailInput" name="email" class="modal-input" autocomplete="email" placeholder="Sähköposti" required><br>`
+          : `<input type="email" id="emailInput" name="email"  class="modal-input" autocomplete="email" placeholder="Sähköposti" required><br>`
       }
       <input type="password" id="passwordInput" name="password" class="modal-input" placeholder="Salasana"  required><br>
       <button class="form-button" type="submit" value="submit" id="${
@@ -251,16 +246,6 @@ const addUserDataToModal = (user: User) => {
   } else {
     imageSrc = "../images/defaultIcon.jpeg";
   }
-  console.log(user);
-  /*<div class="dark-mode-container">
-        <input type="checkbox" class="checkbox" id="checkbox">
-        <label for="checkbox" class="checkbox-label">
-          <i class="fas fa-moon"></i>
-          <i class="fas fa-sun"></i>
-          <span class="ball"></span>
-        </label>
-      </div>*/
-
   return `
   <div class="dialog-profile-container">
   <div class="dialog-profile-main profile-item-container">
@@ -268,7 +253,7 @@ const addUserDataToModal = (user: User) => {
       <input id="profilePicUploadInput" type="file" name="pfp">
       <div class="pfp-container">
         <label for="profilePicUploadInput" >
-          <img id="profileImage" src="${imageSrc}" alt="profile picture" for="pfp">
+          <div id="profileImage" for="pfp" style="background-image: url(${imageSrc})"></div>
           <i class="fa-solid fa-camera" for="pfp"></i>
         </label>
       </div>

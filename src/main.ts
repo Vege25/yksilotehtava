@@ -2,95 +2,27 @@ import "./style.css";
 
 import {
   errorModal,
-  restaurantModal,
   restaurantRow,
   firstRestaurantRow,
   formModal,
   updateForm,
-  addUserDataToModal,
 } from "./components";
 import {
-  addDarkModeSwitchListener,
   addFormModeListener,
-  addLogOutListener,
   addModalCloseListener,
-  addUpdateListener,
+  calculateDistance,
+  checkToken,
   fetchData,
+  runAppStartListeners,
+  updateTextContent,
 } from "./functions";
 import { Restaurant } from "./interfaces/Restaurant";
 import { apiUrl, positionOptions } from "./variables";
-import { LoginUser, User } from "./interfaces/User";
 
-const navTitle = document.querySelector(".nav-title");
-const profileButtons = document.querySelectorAll("#loginButton");
-const hamburgerMenuButton = document.querySelector("#hamburgerMenuButton");
-const navButtons = document.querySelectorAll(".nav-link");
-
-navButtons.forEach((navButton) => {
-  navButton.addEventListener("click", () => {
-    const miniNav = document.querySelector(".mini-nav");
-    const restaurantMap = document.querySelector("#restaurantMap");
-    const body = document.querySelector("body");
-    if (!miniNav || !restaurantMap || !body) {
-      return;
-    }
-    let navElement;
-    switch (navButton.id) {
-      case "restaurants":
-        navElement = miniNav;
-        break;
-      case "map":
-        navElement = restaurantMap;
-        break;
-      case "frontPage" || "navTitleLink":
-        navElement = body;
-        break;
-      default:
-        console.log("no nav elements");
-        return;
-    }
-
-    window.scrollTo({
-      behavior: "smooth",
-      top:
-        navElement.getBoundingClientRect().top -
-        document.body.getBoundingClientRect().top -
-        20,
-    });
-    openNav();
-  });
-});
-
-const showMoreButton = document.querySelector("#showAllRestaurantsBtn");
-showMoreButton?.addEventListener("click", () => {
-  const menuItems = document.querySelectorAll(".menu-item-container");
-
-  menuItems.forEach((menuItem: Element) => {
-    const menuItemDisplayValue = window
-      .getComputedStyle(menuItem as HTMLElement)
-      .getPropertyValue("display");
-    if (menuItemDisplayValue === "none") {
-      (menuItem as HTMLElement).style.display = "flex";
-    }
-  });
-});
-
-hamburgerMenuButton?.addEventListener("click", () => {
-  openNav();
-});
 const modal = document.querySelector("dialog");
 if (!modal) {
   throw new Error("Modal not found");
 }
-profileButtons.forEach((profileButton) => {
-  //TODO check if user is logged in then give true and show profile
-  //TODO if not give false and login menu will be rendered
-  let isLogin: boolean | null;
-  profileButton.addEventListener("click", () => {
-    renderForms(isLogin);
-    checkToken();
-  });
-});
 
 export const renderForms = (isLogin: boolean | null): void => {
   let authDialog;
@@ -104,6 +36,10 @@ export const renderForms = (isLogin: boolean | null): void => {
       evt.preventDefault();
       formLogin();
     });
+
+    addFormModeListener();
+    addModalCloseListener();
+    (modal as any)?.showModal();
   } else {
     updateForm(isLogin);
     console.log("update: " + isLogin);
@@ -117,36 +53,7 @@ export const renderForms = (isLogin: boolean | null): void => {
       }
     });
   }
-  addFormModeListener();
-  addModalCloseListener(modal);
-  (modal as any)?.showModal();
 };
-const updateTextContent = () => {
-  if (!navTitle) {
-    return;
-  }
-  if (window.innerWidth <= 900) {
-    navTitle.textContent = "R";
-  } else {
-    navTitle.textContent = "Ravintolat";
-  }
-};
-updateTextContent();
-window.addEventListener("resize", updateTextContent);
-
-const openNav = () => {
-  const links = document.getElementById("myLinks");
-  if (links) {
-    if (links.style.display === "block") {
-      links.style.display = "none";
-    } else {
-      links.style.display = "block";
-    }
-  }
-};
-
-const calculateDistance = (x1: number, y1: number, x2: number, y2: number) =>
-  Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 const createTable = (restaurants: Restaurant[]) => {
   const menuContainer = document.querySelector(".menu-container");
@@ -233,7 +140,7 @@ const success = async (pos: GeolocationPosition) => {
     });
   } catch (error) {
     modal.innerHTML = errorModal((error as Error).message);
-    modal.showModal();
+    (modal as any).showModal();
   }
 };
 
@@ -317,7 +224,7 @@ export const formUpdate = async () => {
   checkToken();
   console.log(updateData);
 };
-export const uploadPfp = async (pfp: string) => {
+export const uploadPfp = async (pfp: File) => {
   const token = localStorage.getItem("token");
   if (!token) {
     return;
@@ -335,30 +242,28 @@ export const uploadPfp = async (pfp: string) => {
   await fetchData(apiUrl + "/users/avatar", options);
   checkToken();
 };
-const getUserData = async (token: string): Promise<User> => {
+export const uploadFavRestaurant = async (pfp: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    return;
+  }
+  const formData = new FormData();
+  formData.append("avatar", pfp);
+
   const options: RequestInit = {
+    method: "POST",
     headers: {
       Authorization: "Bearer " + token,
     },
+    body: formData,
   };
-  return await fetchData(apiUrl + "/users/token", options);
+  await fetchData(apiUrl + "/users/favouriteRestaurant", options);
+  checkToken();
 };
-const checkToken = async (): Promise<void> => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    console.log("token not found");
-    return;
-  }
-  const userData = await getUserData(token);
-  const profileModal = addUserDataToModal(userData);
-  modal.innerHTML = "";
-  modal.insertAdjacentHTML("beforeend", profileModal);
-  addModalCloseListener(modal);
-  addLogOutListener(modal);
-  addUpdateListener();
-};
-checkToken();
-addModalCloseListener(modal);
-addDarkModeSwitchListener();
 
+checkToken();
+updateTextContent();
+runAppStartListeners();
+
+window.addEventListener("resize", updateTextContent);
 navigator.geolocation.getCurrentPosition(success, error, positionOptions);

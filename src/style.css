@@ -166,7 +166,7 @@ section {
   width: 90%;
 }
 
-.top-burger-section {
+.frontpage-section {
   width: 100%;
   background-color: #040d12;
   border-bottom-left-radius: 20px;
@@ -180,10 +180,10 @@ section {
   background-size: cover;
   right: 0;
 }
-.burger-section-text-container {
+.frontpage-text-container {
   height: 80px;
 }
-.top-burger-section h2 {
+.frontpage-section h2 {
   color: var(--light);
   padding: 1em;
   width: 33.333%;
@@ -191,7 +191,7 @@ section {
   text-align: center;
   font-size: 1.2em;
 }
-.top-burger-section p {
+.frontpage-section p {
   display: none;
 }
 .car-svg {
@@ -250,15 +250,15 @@ article {
   background-color: #6b9484;
   display: block;
 }
-.burger-image-parent:hover .burger-image,
-.burger-image-parent:focus .burger-image {
+.restaurant-map:hover .burger-image,
+.restaurant-map:focus .burger-image {
   -ms-transform: scale(1.2);
   -moz-transform: scale(1.2);
   -webkit-transform: scale(1.2);
   -o-transform: scale(1.2);
   transform: scale(1.2);
 }
-.burger-image-parent {
+.restaurant-map {
   height: 50%;
   width: 100%;
   float: left;
@@ -741,8 +741,8 @@ dialog:has(.dialog-profile-container) {
 }
 .dialog-profile-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  overflow-y: auto;
   height: 100%;
   gap: 20px;
 }
@@ -764,17 +764,8 @@ dialog:has(.dialog-profile-container) {
 .dialog-profile-main {
   background: var(--light-green);
   border: 2px solid var(--dark-green);
-  grid-column: 1 / 2;
-  grid-row: 1 / 4;
   padding: 1em;
   max-width: 300px;
-}
-.dialog-profile-settings {
-  grid-column: 2 / 3;
-}
-.dialog-profile-favourite {
-  grid-column: 2 / 3;
-  grid-row: 2 / 4;
 }
 .profile-top {
   display: flex;
@@ -791,9 +782,11 @@ hr {
 .profile-top h3 {
   justify-content: space-between;
 }
-.dialog-profile-main img {
-  display: block;
+.dialog-profile-main #profileImage {
   width: 200px;
+  height: 200px;
+  background-position: center;
+  background-size: cover;
   border-radius: 50%;
   border: 1px solid var(--dark);
   margin: auto;
@@ -1046,7 +1039,7 @@ body.dark .profile-item-container hr {
     width: 80%;
     margin: auto;
   }
-  article {
+  .restaurant-map-container {
     padding: 50px;
     height: 300px;
     margin: auto;
@@ -1060,7 +1053,7 @@ body.dark .profile-item-container hr {
     -webkit-box-shadow: 1px -1px 34px -2px rgba(0, 0, 0, 0.71) inset;
     -moz-box-shadow: 1px -1px 34px -2px rgba(0, 0, 0, 0.71) inset;
   }
-  .burger-image-parent {
+  .restaurant-map {
     width: 50%;
     height: 100%;
   }
@@ -1075,12 +1068,12 @@ body.dark .profile-item-container hr {
     margin: 0;
     padding-left: 10px;
   }
-  .top-burger-section {
+  .frontpage-section {
     display: flex;
     width: 80%;
     color: var(--light);
   }
-  .burger-section-text-container {
+  .frontpage-text-container {
     height: auto;
     align-items: center;
     width: 40%;
@@ -1092,11 +1085,11 @@ body.dark .profile-item-container hr {
     border-bottom-right-radius: 0px;
     border-bottom-left-radius: 20px;
   }
-  .top-burger-section h2 {
+  .frontpage-section h2 {
     display: block;
     width: 100%;
   }
-  .top-burger-section p {
+  .frontpage-section p {
     display: block;
     padding: 10px 30px;
     text-align: center;
@@ -1169,6 +1162,21 @@ body.dark .profile-item-container hr {
     content: "";
     display: none;
   }
+  .dialog-profile-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
+  .dialog-profile-main {
+    grid-column: 1 / 2;
+    grid-row: 1 / 4;
+  }
+  .dialog-profile-settings {
+    grid-column: 2 / 3;
+  }
+  .dialog-profile-favourite {
+    grid-column: 2 / 3;
+    grid-row: 2 / 4;
+  }
 }
 
 /* M -------------- */
@@ -1181,7 +1189,7 @@ body.dark .profile-item-container hr {
     width: 70%;
     margin: auto;
   }
-  .top-burger-section {
+  .frontpage-section {
     width: 70%;
   }
   .main-bg-img {
@@ -1216,10 +1224,10 @@ body.dark .profile-item-container hr {
 
 /* XXL -------------- */
 @media only screen and (min-width: 1400px) {
-  .top-burger-section h2 {
+  .frontpage-section h2 {
     font-size: 2em;
   }
-  .top-burger-section p {
+  .frontpage-section p {
     text-align: center;
     font-size: 1.5em;
   }
