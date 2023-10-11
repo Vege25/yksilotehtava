@@ -227,8 +227,8 @@ const addNavButtonsListener = () => {
           const miniNav = document.querySelector(".mini-nav");
           navElement = miniNav;
           break;
-        case "map":
-          const restaurantMap = document.querySelector("#restaurantMap");
+        case "maps":
+          const restaurantMap = document.querySelector(".order-now-img");
           navElement = restaurantMap;
           break;
         case "frontPage":
@@ -278,6 +278,9 @@ const addShowMoreListener = () => {
     });
   });
 };
+const changeButtonTextToWait = (button: HTMLInputElement) => {
+  button.textContent = "Odota";
+};
 const runAppStartListeners = () => {
   checkForUserTheme();
   addModalCloseListener();
@@ -298,4 +301,5 @@ export {
   updateTextContent,
   runAppStartListeners,
   calculateDistance,
+  changeButtonTextToWait,
 };

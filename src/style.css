@@ -235,20 +235,8 @@ article {
   display: flex;
   flex-direction: column;
 }
-.burger-image {
-  display: block;
-  height: 100%;
-  width: 100%;
-  max-width: 300px;
-  margin: auto;
-  border-radius: 20px;
-  transition-duration: 1s;
-  background-image: url("../public/images/burger.png");
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-color: #6b9484;
-  display: block;
+#map {
+  z-index: 0;
 }
 .restaurant-map:hover .burger-image,
 .restaurant-map:focus .burger-image {
@@ -1005,7 +993,6 @@ body.dark .profile-item-container hr {
   }
   .dialog-close-button {
     margin: auto;
-    margin-right: 0;
   }
   .dialog-company-container {
     flex-direction: column;

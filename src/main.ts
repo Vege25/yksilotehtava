@@ -10,6 +10,7 @@ import {
   addFormModeListener,
   addModalCloseListener,
   calculateDistance,
+  changeButtonTextToWait,
   checkToken,
   fetchData,
   runAppStartListeners,
@@ -32,6 +33,12 @@ export const renderForms = (isLogin: boolean | null): void => {
 
     form?.addEventListener("submit", (evt) => {
       evt.preventDefault();
+      const formButton = document.querySelector(
+        ".form-button"
+      ) as HTMLInputElement;
+      if (formButton) {
+        changeButtonTextToWait(formButton);
+      }
       formLogin();
     });
 
@@ -44,6 +51,12 @@ export const renderForms = (isLogin: boolean | null): void => {
     const form = document.querySelector("#authForm");
     form?.addEventListener("submit", (evt) => {
       evt.preventDefault();
+      const formButton = document.querySelector(
+        ".form-button"
+      ) as HTMLInputElement;
+      if (formButton) {
+        changeButtonTextToWait(formButton);
+      }
       if (isLogin) {
         formLogin();
       } else {
@@ -61,7 +74,6 @@ const createTable = (restaurants: Restaurant[]): void => {
   menuContainer.innerHTML = "";
   let isFirstRestaurant = true;
   restaurants.forEach((restaurant: Restaurant, index) => {
-    // if it is the first restaurant give make different html for it
     const menuItem = isFirstRestaurant
       ? (() => {
           isFirstRestaurant = false;
@@ -69,6 +81,13 @@ const createTable = (restaurants: Restaurant[]): void => {
         })()
       : restaurantRow(restaurant, index);
     menuContainer.appendChild(menuItem);
+
+    //add marker
+    const x1 = restaurant.location.coordinates[0];
+    const x2 = restaurant.location.coordinates[1];
+    const marker = L.marker([x2, x1]).addTo(map);
+    console.log(marker);
+    marker.bindPopup(`<h3>${restaurant.name}</h3><p>${restaurant.address}</p>`);
   });
 };
 
@@ -93,7 +112,6 @@ const success = async (pos: GeolocationPosition): Promise<void> => {
       return distanceA - distanceB;
     });
     createTable(restaurants);
-    // buttons for filtering
     const sodexoBtn = document.querySelector("#sodexo");
     const compassBtn = document.querySelector("#compass");
     const resetBtn = document.querySelector("#reset");
@@ -258,6 +276,13 @@ export const uploadFavRestaurant = async (pfp: string): Promise<void> => {
   await fetchData(apiUrl + "/users/favouriteRestaurant", options);
   checkToken();
 };
+
+// create map
+const map = L.map("map").setView([60.1699, 24.9384], 8);
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+  attribution: "© OpenStreetMap",
+}).addTo(map);
 
 runAppStartListeners();
 checkToken();

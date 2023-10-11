@@ -249,7 +249,7 @@ const addUserDataToModal = (user: User): string => {
     imageSrc =
       "https://student-restaurants.azurewebsites.net/uploads/" + user.avatar;
   } else {
-    imageSrc = "./images/defaultIcon.jpeg"; // here
+    imageSrc = "./images/defaultIcon.jpeg";
   }
   return `
   <div class="dialog-profile-container">
