@@ -19,6 +19,8 @@ import {
 import { Restaurant } from "./interfaces/Restaurant";
 import { apiUrl, positionOptions } from "./variables";
 
+declare const L: any;
+
 const modal = document.querySelector("dialog");
 if (!modal) {
   throw new Error("Modal not found");
@@ -256,24 +258,6 @@ export const uploadPfp = async (pfp: File): Promise<void> => {
     body: formData,
   };
   await fetchData(apiUrl + "/users/avatar", options);
-  checkToken();
-};
-export const uploadFavRestaurant = async (pfp: string): Promise<void> => {
-  const token = localStorage.getItem("token");
-  if (!token) {
-    return;
-  }
-  const formData = new FormData();
-  formData.append("avatar", pfp);
-
-  const options: RequestInit = {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    body: formData,
-  };
-  await fetchData(apiUrl + "/users/favouriteRestaurant", options);
   checkToken();
 };
 

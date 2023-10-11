@@ -483,6 +483,7 @@ footer {
   cursor: pointer;
 }
 dialog {
+  width: 90%;
   position: fixed;
   padding: 1.5em;
   margin: auto;
@@ -495,13 +496,10 @@ dialog {
 }
 dialog::backdrop {
   backdrop-filter: blur(2px);
-} /*
-dialog h2 {
-  text-align: center;
-  font-size: 2rem;
-  color: var(--green);
-  margin-bottom: 20px;
-}*/
+}
+dialog:has(#authForm) {
+  max-width: 400px;
+}
 .dialog-company-container {
   display: flex;
   justify-content: space-evenly;
@@ -549,6 +547,7 @@ dialog h2 {
 }
 .table-container {
   max-height: 300px;
+  width: 100%;
   overflow-y: auto;
   overflow-x: auto;
   margin: 25px 0;
@@ -610,6 +609,8 @@ dialog table tbody tr:hover {
 .modal-input {
   align-self: flex-start;
   width: 100%;
+  max-width: 300px;
+  margin: auto;
   height: 40px;
   padding: 0 10px;
   font-size: 0.8rem;
@@ -679,6 +680,7 @@ form {
 }
 .forms-top-container button {
   margin-left: auto;
+  margin-right: 0;
 }
 
 .slider-label {
@@ -726,6 +728,7 @@ form {
 /* Modal profile --  */
 dialog:has(.dialog-profile-container) {
   background-color: var(--light);
+  width: 95%;
 }
 .dialog-profile-container {
   display: grid;
@@ -754,7 +757,7 @@ dialog:has(.dialog-profile-container) {
   background: var(--light-green);
   border: 2px solid var(--dark-green);
   padding: 1em;
-  max-width: 300px;
+  max-width: 100%;
 }
 .profile-top {
   display: flex;
@@ -766,7 +769,7 @@ hr {
   margin-bottom: 10px;
 }
 .profile-side {
-  width: 300px;
+  width: 100%;
 }
 .profile-top h3 {
   justify-content: space-between;
@@ -796,6 +799,7 @@ hr {
 }
 #profilePicUploadInput {
   visibility: hidden;
+  width: 0;
 }
 .pfp-container {
   position: relative;
@@ -971,6 +975,9 @@ body.dark .profile-item-container hr {
     width: 100%;
     margin: 0;
   }
+  dialog {
+    width: 95%;
+  }
 }
 /* XS -------------- */
 @media only screen and (max-width: 550px) {
@@ -992,6 +999,10 @@ body.dark .profile-item-container hr {
     padding: 5px;
   }
   .dialog-close-button {
+    margin: auto;
+    margin-right: 0;
+  }
+  dialog:has(.table-container) .dialog-close-button {
     margin: auto;
   }
   .dialog-company-container {
@@ -1157,13 +1168,20 @@ body.dark .profile-item-container hr {
   .dialog-profile-main {
     grid-column: 1 / 2;
     grid-row: 1 / 4;
+    max-width: 300px;
   }
   .dialog-profile-settings {
     grid-column: 2 / 3;
+    max-width: 300px;
   }
   .dialog-profile-favourite {
     grid-column: 2 / 3;
     grid-row: 2 / 4;
+    max-width: 300px;
+  }
+  dialog:has(.dialog-profile-container) {
+    background-color: var(--light);
+    width: 675px;
   }
 }
 
