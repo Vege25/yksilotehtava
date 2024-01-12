@@ -3,9 +3,9 @@
 Yksilotehtava is a web application developed as a school project with the aim of simplifying the process of finding nearby student restaurants and exploring their daily and weekly menus. The project is designed to cater specifically to students, providing them with a convenient tool to discover affordable and delicious meal options around their campus.
 
 ## Key Features
-* Location-based Search: Yksilotehtava utilizes location data to find student restaurants in close proximity to the user. This feature ensures that students can easily discover dining options near their current location.
-* Daily and Weekly Menus: The web application not only displays the daily menus of the selected restaurants but also provides an overview of the entire week's offerings. This feature assists students in planning their meals in advance.
-* User-Friendly Interface: The user interface is designed to be intuitive and user-friendly, making it accessible for students of all technical backgrounds. The goal is to create a seamless experience for users to quickly find the information they need.
+- **Location-based Search:** Yksilotehtava utilizes location data to find student restaurants in close proximity to the user. This feature ensures that students can easily discover dining options near their current location.
+- **Daily and Weekly Menus:** The web application not only displays the daily menus of the selected restaurants but also provides an overview of the entire week's offerings. This feature assists students in planning their meals in advance.
+- **User-Friendly Interface:** The user interface is designed to be intuitive and user-friendly, making it accessible for students of all technical backgrounds. The goal is to create a seamless experience for users to quickly find the information they need.
 
 ## Technologies Used
 - **Frontend:** HTML, CSS, Typescript, PWA
